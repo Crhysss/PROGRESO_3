@@ -40,21 +40,22 @@ void formato(){
 
     fclose(archivo);
 }
-void cargarCitas() {
-    FILE *archivo;
-    archivo = fopen("estudiantes.txt", "r");
+void guardarEstudiantes(Estudiante* estudiantes, int numEstudiantes, const char* nombreArchivo) {
+    FILE* archivo;
+    archivo = fopen(nombreArchivo, "w");
 
     if (archivo == NULL) {
-        printf("No se encontro el archivo de citas.\n");
-        return;  // Retorna sin realizar ninguna acción adicional
+        printf("No se pudo abrir el archivo para escritura.\n");
+        exit(1);
     }
 
-    while (!feof(archivo)) {
-    fscanf(archivo, "%[^;];  %[^;];  %d;  %[^;];  %[^;];  %d\n", Datos[numDatos].orden,
-           Datos[numDatos].nombre, Datos[numDatos].carrera, Datos[numDatos].not1,
-           Datos[numDatos].not2, Datos[numDatos].not3);
-    numDatos++;
-}
+    fprintf(archivo, "Orden;Nombre;Carrera;Nota1;Nota2;Nota3;Promedio\n");
+
+    for (int i = 0; i < numEstudiantes; i++) {
+        fprintf(archivo, "%d;%s;%s;%.2f;%.2f;%.2f;%.2f\n", estudiantes[i].orden, estudiantes[i].nombre,
+                estudiantes[i].carrera, estudiantes[i].nota1, estudiantes[i].nota2, estudiantes[i].nota3, estudiantes[i].promedio);
+    }
+
     fclose(archivo);
 }
 int main(){
