@@ -1,72 +1,84 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-
-
-void llamararchivo() {
-    FILE *archivo;
-    archivo = fopen("alumnos.txt", "r");
-
-    if (archivo == NULL) {
-        printf("Error al abrir el archivo para lectura.\n");
-        return;
-    }
-    fclose(archivo);
-}
-
 typedef struct {
-    int orden;
+    int codigo;
     char nombre[50];
     char carrera[50];
     float nota1;
     float nota2;
     float nota3;
     float promedio;
-} Estudiantes;
+} datos;
 
-void cargarEstudiantes(Estudiantes* estudiantes, int numEstudiantes, const char* alumnos) {
+void cargarEstudiantes(datos* estudiantes, int numDatos,  char* alumnos) {
     FILE* archivo;
     archivo = fopen(alumnos, "r");
 
     if (archivo == NULL) {
-        printf("No se pudo abrir el archivo para lectura.\n");
-        
+        printf("No se abrio en formato lectura.\n");
+        exit(1);
     }
 
-    for (int i = 0; i < numEstudiantes; i++) {
-        fscanf(archivo, "%d;%[^;];%[^;];%f;%f;%f\n", &estudiantes[i].orden, estudiantes[i].nombre,
+    for (int i = 0; i < numDatos; i++) {
+        fscanf(archivo, "%d;%[^;];%[^;];%f;%f;%f\n", &estudiantes[i].codigo, estudiantes[i].nombre,
                estudiantes[i].carrera, &estudiantes[i].nota1, &estudiantes[i].nota2, &estudiantes[i].nota3);
     }
 
     fclose(archivo);
 }
-void guardarEstudiantes(Estudiantes* estudiantes, int numEstudiantes, const char* nombreArchivo) {
-    FILE* archivo;
-    archivo = fopen(nombreArchivo, "w");
 
-    if (archivo == NULL) {
-        printf("No se pudo abrir el archivo para escritura.\n");
-        
+void calcularPromedio(datos* estudiantes, int numDatos) {
+    for (int i = 0; i < numDatos; i++) {
+        estudiantes[i].promedio = (estudiantes[i].nota1 + estudiantes[i].nota2 + estudiantes[i].nota3) / 3.0;
     }
-
-    fprintf(archivo, "Orden;Nombre;Carrera;Nota1;Nota2;Nota3;Promedio\n");
-
-    for (int i = 0; i < numEstudiantes; i++) {
-        fprintf(archivo, "%d;%s;%s;%.2f;%.2f;%.2f;%.2f\n", estudiantes[i].orden, estudiantes[i].nombre,
-                estudiantes[i].carrera, estudiantes[i].nota1, estudiantes[i].nota2, estudiantes[i].nota3, estudiantes[i].promedio);
-    }
-
-    fclose(archivo);
 }
-void ordenarEstudiantes(Estudiantes* estudiantes, int numEstudiantes) {
-    for (int i = 0; i < numEstudiantes - 1; i++) {
-        for (int j = 0; j < numEstudiantes - i - 1; j++) {
-            if (estudiantes[j].orden < estudiantes[j + 1].orden) {
-                Estudiantes or = estudiantes[j];
+
+void ordenarEstudiantes(datos* estudiantes, int numDatos) {
+    for (int i = 0; i < numDatos - 1; i++) {
+        for (int j = 0; j < numDatos - i - 1; j++) {
+            if (estudiantes[j].codigo < estudiantes[j + 1].codigo) {
+                datos struc = estudiantes[j];
                 estudiantes[j] = estudiantes[j + 1];
-                estudiantes[j + 1] = or;
+                estudiantes[j + 1] = struc;
             }
         }
     }
 }
 
+void guardarEstudiantes(datos* estudiantes, int numDatos, char* nombreArchivo) {
+    FILE* archivo;
+    archivo = fopen(nombreArchivo, "w");
+
+    if (archivo == NULL) {
+        printf("No se abrio en formato escritura.\n");
+        exit(1);
+    }
+
+    fprintf(archivo, "Codigo;Nombre;Carrera;Nota1;Nota2;Nota3;Promedio\n");
+
+    for (int i = 0; i < numDatos; i++) {
+        fprintf(archivo, "%d;%s;%s;%.2f;%.2f;%.2f;%.2f\n", estudiantes[i].codigo, estudiantes[i].nombre,
+                estudiantes[i].carrera, estudiantes[i].nota1, estudiantes[i].nota2, estudiantes[i].nota3, estudiantes[i].promedio);
+    }
+
+    fclose(archivo);
+}
+
+int main() {
+    char* archivoEntrada = "alumnos.txt";
+    char* archivoSalida = "estudiantes_ordenados.txt";
+    int numDatos = 5;
+
+    datos estudiantes[numDatos];
+
+    cargarEstudiantes(estudiantes, numDatos, archivoEntrada);
+    calcularPromedio(estudiantes, numDatos);
+    ordenarEstudiantes(estudiantes, numDatos);
+    guardarEstudiantes(estudiantes, numDatos, archivoSalida);
+
+    printf("El archivo se creo.\n");
+
+    return 0;
+}
