@@ -3,7 +3,7 @@
 #include <string.h>
 
 typedef struct {
-    int codigo;
+    int orden;
     char nombre[50];
     char carrera[50];
     float nota1;
@@ -22,7 +22,7 @@ void cargarEstudiantes(datos* estudiantes, int numDatos,  char* alumnos) {
     }
 
     for (int i = 0; i < numDatos; i++) {
-        fscanf(archivo, "%d;%[^;];%[^;];%f;%f;%f\n", &estudiantes[i].codigo, estudiantes[i].nombre,
+        fscanf(archivo, "%d;%[^;];%[^;];%f;%f;%f\n", &estudiantes[i].orden, estudiantes[i].nombre,
                estudiantes[i].carrera, &estudiantes[i].nota1, &estudiantes[i].nota2, &estudiantes[i].nota3);
     }
 
@@ -38,7 +38,7 @@ void calcularPromedio(datos* estudiantes, int numDatos) {
 void ordenarEstudiantes(datos* estudiantes, int numDatos) {
     for (int i = 0; i < numDatos - 1; i++) {
         for (int j = 0; j < numDatos - i - 1; j++) {
-            if (estudiantes[j].codigo < estudiantes[j + 1].codigo) {
+            if (estudiantes[j].orden < estudiantes[j + 1].orden) {
                 datos struc = estudiantes[j];
                 estudiantes[j] = estudiantes[j + 1];
                 estudiantes[j + 1] = struc;
@@ -56,10 +56,10 @@ void guardarEstudiantes(datos* estudiantes, int numDatos, char* nombreArchivo) {
         exit(1);
     }
 
-    fprintf(archivo, "Codigo;Nombre;Carrera;Nota1;Nota2;Nota3;Promedio\n");
+    fprintf(archivo, "%-5s  %-5s  %-5s  %-5s  %-5s  %-5s  %-5s\n", "Orden", "Nombre","Carrera","Nota1","Nota2","Nota3","Promedio");
 
     for (int i = 0; i < numDatos; i++) {
-        fprintf(archivo, "%d;%s;%s;%.2f;%.2f;%.2f;%.2f\n", estudiantes[i].codigo, estudiantes[i].nombre,
+        fprintf(archivo, "%d;%s;%s;%.2f;%.2f;%.2f;%.2f\n", estudiantes[i].orden, estudiantes[i].nombre,
                 estudiantes[i].carrera, estudiantes[i].nota1, estudiantes[i].nota2, estudiantes[i].nota3, estudiantes[i].promedio);
     }
 
