@@ -13,18 +13,15 @@ void llamararchivo() {
     }
     fclose(archivo);
 }
-typedef struct notas{
-    int not1[5]={"6.00","5.00","10.00","9.00","8.50"};
-    int not2[5]={"7.00","6.00","9.00","9.00","8.00"};
-    float not3[5]={"8.00", "7.00", "10.00","9.00","9.00"};
-}Notas;
 
 typedef struct datos
 {
     int orden;
     char nombre[30];
     char carrera[30];
-    notas Notas;
+    float not1[5]={6.00;5.00;10.00;9.00;8.50};
+    float not2[5]={7.00;6.00;9.00;9.00;8.00};
+    float not3[5]={8.00; 7.00; 10.00;9.00;9.00};
 }Datos;
 int numDatos=5;
 void formato(){
@@ -38,7 +35,7 @@ void formato(){
     
     for (int i = 0; i < numDatos; i++) {
         fprintf(archivo, "%-10d  ;  %-10s  ;  %-10s  ;  %-14f  ;  %-6f  ;  %-10f\n", Datos.orden, Datos.nombre, Datos.carrera,
-        Datos.Nota.not1[i], Datos.Nota.not2[i], Datos.Nota.not3[i]);
+        Datos.not1[i], Datos.not2[i], Datos.not3[i]);
     }
 
     fclose(archivo);
@@ -54,14 +51,23 @@ void cargarCitas() {
 
     while (!feof(archivo)) {
     fscanf(archivo, "%[^;];  %[^;];  %d;  %[^;];  %[^;];  %d\n", Datos[numDatos].orden,
-           Datos[numDatos].nombre, Datos[numDatos].cedula, citas[numCitas].fecha,
-           citas[numCitas].especialidad, &citas[numCitas].hora);
-    numCitas++;
+           Datos[numDatos].nombre, Datos[numDatos].carrera, Datos[numDatos].not1,
+           Datos[numDatos].not2, Datos[numDatos].not3);
+    numDatos++;
 }
-
-
     fclose(archivo);
 }
 int main(){
-
+    int i;
+    float not1[5]={6.00,5.00,10.00,9.00,8.50};
+    float not2[5]={7.00,6.00,9.00,9.00,8.00};
+    float not3[5]={8.00, 7.00, 10.00,9.00,9.00};
+    float sumas[5]={0};
+    for(i=0; i<5;i++){
+        sumas[0]=not1[i]+not2[i]+not3[i];
+        sumas[1]=not1[i]+not2[i]+not3[i];
+        sumas[2]=not1[i]+not2[i]+not3[i];
+        sumas[3]=not1[i]+not2[i]+not3[i];
+        sumas[4]=not1[i]+not2[i]+not3[i];
+    }
 }
