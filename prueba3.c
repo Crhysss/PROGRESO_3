@@ -59,7 +59,7 @@ void guardarEstudiantes(datos* estudiantes, int numDatos, char* nombreArchivo) {
     fprintf(archivo, "%-5s  %-5s  %-5s  %-5s  %-5s  %-5s  %-5s\n", "Orden", "Nombre","Carrera","Nota1","Nota2","Nota3","Promedio");
 
     for (int i = 0; i < numDatos; i++) {
-        fprintf(archivo, "%d;%s;%s;%.2f;%.2f;%.2f;%.2f\n", estudiantes[i].orden, estudiantes[i].nombre,
+        fprintf(archivo, "%-3d; %-5s ; %-5s ; %-5.2f ; %-5.2f ; %-5.2f ; %-5.2f\n", estudiantes[i].orden, estudiantes[i].nombre,
                 estudiantes[i].carrera, estudiantes[i].nota1, estudiantes[i].nota2, estudiantes[i].nota3, estudiantes[i].promedio);
     }
 
